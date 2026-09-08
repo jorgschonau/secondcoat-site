@@ -10,7 +10,7 @@ interface ImageAsset {
 interface Props {
   id: string;
   number: string;
-  label: string;
+  label?: string;
   lines: string[];
   before: ImageAsset;
   after: ImageAsset;
@@ -19,12 +19,14 @@ interface Props {
   priority?: boolean;
   /** Percent of stage showing the enhanced (after) image. Default 65. */
   afterPercent?: number;
+  /** Used for aria when label is omitted (e.g. group title). */
+  ariaName?: string;
 }
 
 const {
   id,
   number,
-  label,
+  label = '',
   lines,
   before,
   after,
@@ -32,12 +34,14 @@ const {
   objectPosition = 'center center',
   priority = false,
   afterPercent = 65,
+  ariaName,
 } = Astro.props;
 
 const dividerPercent = 100 - afterPercent;
 const loading = priority ? 'eager' : 'lazy';
 const fetchpriority = priority ? 'high' : 'auto';
 const aspectNumeric = after.width / after.height;
+const accessibleName = ariaName || label || 'Comparison';
 ---
 
 <figure
@@ -48,7 +52,7 @@ const aspectNumeric = after.width / after.height;
   <figcaption class="comparison__caption">
     <div class="comparison__meta">
       <span class="label">{number}</span>
-      <h3 class="comparison__title">{label}</h3>
+      {label ? <h3 class="comparison__title">{label}</h3> : null}
     </div>
     <p class="comparison__lines">
       {lines.map((line, i) => (
@@ -64,7 +68,7 @@ const aspectNumeric = after.width / after.height;
     data-stage
     role="group"
     aria-roledescription="before and after image comparison"
-    aria-label={`${label}: drag or use arrow keys to compare original and restored`}
+    aria-label={`${accessibleName}: drag or use arrow keys to compare original and restored`}
   >
     <div class="comparison__media comparison__media--after" aria-hidden="true">
       <picture>
