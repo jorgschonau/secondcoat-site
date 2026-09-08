@@ -255,6 +255,28 @@ export const workProjects: WorkProject[] = [
         aspectRatio: '727 / 1024',
         objectPosition: 'center top',
       },
+      {
+        id: 'leader-braid',
+        number: '10',
+        label: 'Faction Leader',
+        lines: ['Identity preserved.', 'Presence recovered.'],
+        before: {
+          src: '/images/smac/leader-braid-original.png',
+          srcWebp: '/images/smac/leader-braid-original.webp',
+          width: 149,
+          height: 178,
+          alt: 'Original low-resolution faction leader portrait from Sid Meier’s Alpha Centauri, 1999',
+        },
+        after: {
+          src: '/images/smac/leader-braid-enhanced.jpg',
+          srcWebp: '/images/smac/leader-braid-enhanced.webp',
+          width: 857,
+          height: 1024,
+          alt: 'Visually restored faction leader portrait preserving original character at modern resolution',
+        },
+        aspectRatio: '857 / 1024',
+        objectPosition: 'center top',
+      },
     ],
   },
 ];
