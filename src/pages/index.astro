@@ -81,36 +81,23 @@ const mailto = `mailto:${SITE.contactEmail}?subject=${encodeURIComponent('Classi
           <p class="work__disclaimer">{featured.disclaimer}</p>
         </header>
 
-        <div class="work__comparisons stack-2xl">
+        <div class="work__showcase stack-2xl">
           {
-            featured.comparisonGroups.map((group, groupIndex) => (
-              <section
-                class="work__group stack-xl"
-                aria-labelledby={`group-${group.id}`}
-              >
-                <header class="work__group-header">
-                  <span class="label">{group.number}</span>
-                  <h3 id={`group-${group.id}`} class="work__group-title">
-                    {group.title}
-                  </h3>
-                </header>
-                <div class="work__group-items stack-2xl">
-                  {group.items.map((pair, index) => (
-                    <ComparisonSlider
-                      id={pair.id}
-                      number={pair.number}
-                      label={pair.label}
-                      lines={pair.lines}
-                      before={pair.before}
-                      after={pair.after}
-                      aspectRatio={pair.aspectRatio}
-                      objectPosition={pair.objectPosition}
-                      ariaName={`${group.title} ${pair.number}`}
-                      priority={groupIndex === 0 && index === 0}
-                    />
-                  ))}
-                </div>
-              </section>
+            featured.showcase.map((item, index) => (
+              <ComparisonSlider
+                id={item.id}
+                number={item.number}
+                label={item.label}
+                lines={[item.description]}
+                before={item.before}
+                after={item.after}
+                aspectRatio={item.aspectRatio}
+                objectPosition={item.objectPosition}
+                afterPercent={item.afterPercent}
+                featured={item.featured}
+                ariaName={item.label}
+                priority={index === 0}
+              />
             ))
           }
         </div>
@@ -357,20 +344,8 @@ const mailto = `mailto:${SITE.contactEmail}?subject=${encodeURIComponent('Classi
     color: var(--color-ink-faint);
   }
 
-  .work__group-header {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    padding-bottom: 0.85rem;
-    border-bottom: 1px solid var(--color-rule);
-  }
-
-  .work__group-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+  .work__showcase {
+    padding-top: var(--space-md);
   }
 
   .philosophy .prose {

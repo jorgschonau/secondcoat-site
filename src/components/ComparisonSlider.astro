@@ -17,10 +17,12 @@ interface Props {
   aspectRatio: string;
   objectPosition?: string;
   priority?: boolean;
-  /** Percent of stage showing the enhanced (after) image. Default 65. */
+  /** Percent of stage showing the enhanced (after) image. Default 55. */
   afterPercent?: number;
   /** Used for aria when label is omitted (e.g. group title). */
   ariaName?: string;
+  /** Larger stage for the lead showcase item */
+  featured?: boolean;
 }
 
 const {
@@ -33,8 +35,9 @@ const {
   aspectRatio,
   objectPosition = 'center center',
   priority = false,
-  afterPercent = 65,
+  afterPercent = 55,
   ariaName,
+  featured = false,
 } = Astro.props;
 
 const dividerPercent = 100 - afterPercent;
@@ -45,7 +48,7 @@ const accessibleName = ariaName || label || 'Comparison';
 ---
 
 <figure
-  class="comparison"
+  class:list={['comparison', featured && 'comparison--featured']}
   data-comparison
   style={`--aspect:${aspectRatio}; --ar:${aspectNumeric}; --object-pos:${objectPosition}; --pos:${dividerPercent}%;`}
 >
@@ -258,14 +261,15 @@ const accessibleName = ariaName || label || 'Comparison';
   .comparison__lines {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 1.15rem;
-    line-height: 1.35;
+    font-size: 1.05rem;
+    line-height: 1.45;
     color: var(--color-ink-muted);
     text-align: right;
+    max-width: 28rem;
   }
 
   .comparison__stage {
-    --stage-max-h: min(82vh, 52rem);
+    --stage-max-h: min(78vh, 46rem);
     position: relative;
     aspect-ratio: var(--aspect);
     /* Keep true image proportions when max-height binds (critical on mobile) */
@@ -279,6 +283,10 @@ const accessibleName = ariaName || label || 'Comparison';
     touch-action: none;
     user-select: none;
     cursor: col-resize;
+  }
+
+  .comparison--featured .comparison__stage {
+    --stage-max-h: min(86vh, 54rem);
   }
 
   .comparison__media {
@@ -440,7 +448,11 @@ const accessibleName = ariaName || label || 'Comparison';
     }
 
     .comparison__stage {
-      --stage-max-h: min(88vh, 42rem);
+      --stage-max-h: min(78vh, 38rem);
+    }
+
+    .comparison--featured .comparison__stage {
+      --stage-max-h: min(84vh, 44rem);
     }
 
     .comparison__handle {

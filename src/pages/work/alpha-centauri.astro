@@ -52,33 +52,23 @@ if (!project) {
         <p class="disclaimer">{project.disclaimer}</p>
       </header>
 
-      <div class="stack-comparisons">
+      <div class="stack-showcase">
         {
-          project.comparisonGroups.map((group, groupIndex) => (
-            <section class="group stack-xl" aria-labelledby={`page-group-${group.id}`}>
-              <header class="group__header">
-                <span class="label">{group.number}</span>
-                <h2 id={`page-group-${group.id}`} class="group__title">
-                  {group.title}
-                </h2>
-              </header>
-              <div class="group__items">
-                {group.items.map((pair, index) => (
-                  <ComparisonSlider
-                    id={`page-${pair.id}`}
-                    number={pair.number}
-                    label={pair.label}
-                    lines={pair.lines}
-                    before={pair.before}
-                    after={pair.after}
-                    aspectRatio={pair.aspectRatio}
-                    objectPosition={pair.objectPosition}
-                    ariaName={`${group.title} ${pair.number}`}
-                    priority={groupIndex === 0 && index === 0}
-                  />
-                ))}
-              </div>
-            </section>
+          project.showcase.map((item, index) => (
+            <ComparisonSlider
+              id={`page-${item.id}`}
+              number={item.number}
+              label={item.label}
+              lines={[item.description]}
+              before={item.before}
+              after={item.after}
+              aspectRatio={item.aspectRatio}
+              objectPosition={item.objectPosition}
+              afterPercent={item.afterPercent}
+              featured={item.featured}
+              ariaName={item.label}
+              priority={index === 0}
+            />
           ))
         }
       </div>
@@ -105,28 +95,7 @@ if (!project) {
     color: var(--color-ink-faint);
   }
 
-  .stack-comparisons > * + * {
-    margin-top: var(--space-2xl);
-  }
-
-  .group__header {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    padding-bottom: 0.85rem;
-    border-bottom: 1px solid var(--color-rule);
-  }
-
-  .group__title {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .group__items > * + * {
+  .stack-showcase > * + * {
     margin-top: var(--space-2xl);
   }
 

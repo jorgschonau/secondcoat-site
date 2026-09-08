@@ -8,23 +8,20 @@ export type ComparisonImage = {
   alt: string;
 };
 
-export type ComparisonPair = {
+export type ShowcaseItem = {
   id: string;
   number: string;
-  /** Optional item label; group title usually carries the category */
-  label?: string;
-  lines: string[];
+  label: string;
+  /** One concise supporting sentence */
+  description: string;
   before: ComparisonImage;
   after: ComparisonImage;
   aspectRatio: string;
   objectPosition?: string;
-};
-
-export type ComparisonGroup = {
-  id: string;
-  number: string;
-  title: string;
-  items: ComparisonPair[];
+  /** Larger presentation for the lead capability proof */
+  featured?: boolean;
+  /** Initial % of stage showing restored image. Default 55. */
+  afterPercent?: number;
 };
 
 export type WorkProject = {
@@ -39,7 +36,11 @@ export type WorkProject = {
   summary: string[];
   question: string[];
   disclaimer: string;
-  comparisonGroups: ComparisonGroup[];
+  /**
+   * Ordered showcase proving breadth:
+   * GAME → CAST → DETAIL → CINEMATIC → WORLD
+   */
+  showcase: ShowcaseItem[];
 };
 
 export const workProjects: WorkProject[] = [
@@ -59,272 +60,127 @@ export const workProjects: WorkProject[] = [
     question: ['What if we kept the game —', 'and removed the limitations?'],
     disclaimer:
       'An independent visual restoration study created to demonstrate the Second Coat process. Sid Meier’s Alpha Centauri and related trademarks and artwork belong to their respective rights holders. This project is not affiliated with or endorsed by Electronic Arts or Firaxis Games.',
-    comparisonGroups: [
+    showcase: [
       {
-        id: 'faction-leaders',
+        id: 'ui-proposal',
         number: '01',
-        title: 'Faction Leaders',
-        items: [
-          {
-            id: 'leader-red',
-            number: '01',
-            lines: ['Identity preserved.', 'Detail recovered.'],
-            before: {
-              src: '/images/smac/leader-red-original.png',
-              srcWebp: '/images/smac/leader-red-original.webp',
-              width: 163,
-              height: 159,
-              alt: 'Original low-resolution faction leader portrait from Sid Meier’s Alpha Centauri, 1999',
-            },
-            after: {
-              src: '/images/smac/leader-red-enhanced.png',
-              srcWebp: '/images/smac/leader-red-enhanced.webp',
-              width: 1254,
-              height: 1254,
-              alt: 'Visually restored faction leader portrait, preserving original identity at modern resolution',
-            },
-            aspectRatio: '1 / 1',
-            objectPosition: 'center center',
-          },
-          {
-            id: 'leader-old',
-            number: '02',
-            lines: ['Character,', 'not replacement.'],
-            before: {
-              src: '/images/smac/leader-old-original.png',
-              srcWebp: '/images/smac/leader-old-original.webp',
-              width: 291,
-              height: 350,
-              alt: 'Original low-resolution older faction leader portrait from Sid Meier’s Alpha Centauri, 1999',
-            },
-            after: {
-              src: '/images/smac/leader-old-enhanced.png',
-              srcWebp: '/images/smac/leader-old-enhanced.webp',
-              width: 1144,
-              height: 1375,
-              alt: 'Visually restored older faction leader portrait, preserving original character at modern resolution',
-            },
-            aspectRatio: '291 / 350',
-            objectPosition: 'center top',
-          },
-          {
-            id: 'leader-dark',
-            number: '03',
-            lines: ['Same presence.', 'Recovered clarity.'],
-            before: {
-              src: '/images/smac/leader-dark-original.png',
-              srcWebp: '/images/smac/leader-dark-original.webp',
-              width: 149,
-              height: 178,
-              alt: 'Original low-resolution faction leader portrait from Sid Meier’s Alpha Centauri, 1999',
-            },
-            after: {
-              src: '/images/smac/leader-dark-enhanced.jpg',
-              srcWebp: '/images/smac/leader-dark-enhanced.webp',
-              width: 857,
-              height: 1024,
-              alt: 'Visually restored faction leader portrait, preserving original character at modern resolution',
-            },
-            aspectRatio: '857 / 1024',
-            objectPosition: 'center top',
-          },
-          {
-            id: 'leader-braid',
-            number: '04',
-            lines: ['Identity preserved.', 'Presence recovered.'],
-            before: {
-              src: '/images/smac/leader-braid-original.png',
-              srcWebp: '/images/smac/leader-braid-original.webp',
-              width: 149,
-              height: 178,
-              alt: 'Original low-resolution faction leader portrait from Sid Meier’s Alpha Centauri, 1999',
-            },
-            after: {
-              src: '/images/smac/leader-braid-enhanced.jpg',
-              srcWebp: '/images/smac/leader-braid-enhanced.webp',
-              width: 857,
-              height: 1024,
-              alt: 'Visually restored faction leader portrait preserving original character at modern resolution',
-            },
-            aspectRatio: '857 / 1024',
-            objectPosition: 'center top',
-          },
-          {
-            id: 'leader-scan',
-            number: '05',
-            lines: ['Atmosphere intact.', 'Resolution recovered.'],
-            before: {
-              src: '/images/smac/leader-scan-original.png',
-              srcWebp: '/images/smac/leader-scan-original.webp',
-              width: 200,
-              height: 120,
-              alt: 'Original low-resolution faction leader portrait with scanline presentation, 1999',
-            },
-            after: {
-              src: '/images/smac/leader-scan-enhanced.jpg',
-              srcWebp: '/images/smac/leader-scan-enhanced.webp',
-              width: 1024,
-              height: 614,
-              alt: 'Visually restored faction leader portrait preserving original lighting and atmosphere at modern resolution',
-            },
-            aspectRatio: '1024 / 614',
-            objectPosition: 'center center',
-          },
-        ],
+        label: 'Full Game Interface',
+        description:
+          'Characters, interface artwork, symbols, typography and UI restored as one coherent game screen.',
+        featured: true,
+        afterPercent: 55,
+        before: {
+          src: '/images/smac/ui-proposal-original.png',
+          srcWebp: '/images/smac/ui-proposal-original.webp',
+          width: 960,
+          height: 664,
+          alt: 'Original Planetary Council proposal interface from Sid Meier’s Alpha Centauri, 1999',
+        },
+        after: {
+          src: '/images/smac/ui-proposal-enhanced.jpg',
+          srcWebp: '/images/smac/ui-proposal-enhanced.webp',
+          width: 1024,
+          height: 708,
+          alt: 'Visually restored Planetary Council interface preserving original layout at modern resolution',
+        },
+        aspectRatio: '1024 / 708',
+        objectPosition: 'center top',
       },
       {
-        id: 'environments',
+        id: 'cover',
         number: '02',
-        title: 'Environments',
-        items: [
-          {
-            id: 'environment',
-            number: '01',
-            lines: ['Keep the world.', 'Lose the soft focus.'],
-            before: {
-              src: '/images/smac/environment-original.png',
-              srcWebp: '/images/smac/environment-original.webp',
-              width: 1024,
-              height: 546,
-              alt: 'Original low-resolution environment artwork from Sid Meier’s Alpha Centauri, 1999',
-            },
-            after: {
-              src: '/images/smac/environment-enhanced.jpg',
-              srcWebp: '/images/smac/environment-enhanced.webp',
-              width: 1024,
-              height: 546,
-              alt: 'Visually restored environment artwork preserving original art direction at modern resolution',
-            },
-            aspectRatio: '1024 / 546',
-            objectPosition: 'center center',
-          },
-        ],
+        label: 'Character System',
+        description:
+          'Seven distinct faction leaders restored individually while preserving the visual identity of the original cast.',
+        afterPercent: 55,
+        before: {
+          src: '/images/smac/cover-original.png',
+          srcWebp: '/images/smac/cover-original.webp',
+          width: 568,
+          height: 800,
+          alt: 'Original Sid Meier’s Alpha Centauri key art with seven faction leaders, 1999',
+        },
+        after: {
+          src: '/images/smac/cover-enhanced.jpg',
+          srcWebp: '/images/smac/cover-enhanced.webp',
+          width: 727,
+          height: 1024,
+          alt: 'Visually restored Alpha Centauri key art with seven faction leaders at modern resolution',
+        },
+        aspectRatio: '727 / 1024',
+        objectPosition: 'center top',
       },
       {
-        id: 'cinematics',
+        id: 'leader-old',
         number: '03',
-        title: 'Cinematics',
-        items: [
-          {
-            id: 'cinematic',
-            number: '01',
-            lines: ['The original direction,', 'beyond 1999 resolution.'],
-            before: {
-              src: '/images/smac/cinematic-original.png',
-              srcWebp: '/images/smac/cinematic-original.webp',
-              width: 867,
-              height: 488,
-              alt: 'Original low-resolution pre-rendered cinematic frame with cybernetic figure, 1999',
-            },
-            after: {
-              src: '/images/smac/cinematic-enhanced.png',
-              srcWebp: '/images/smac/cinematic-enhanced.webp',
-              width: 1672,
-              height: 941,
-              alt: 'Visually restored cinematic frame preserving original art direction at modern resolution',
-            },
-            aspectRatio: '16 / 9',
-            objectPosition: 'center center',
-          },
-          {
-            id: 'unit-hover',
-            number: '02',
-            lines: ['Same silhouette.', 'Better canvas.'],
-            before: {
-              src: '/images/smac/unit-hover-original.jpg',
-              srcWebp: '/images/smac/unit-hover-original.webp',
-              width: 1024,
-              height: 576,
-              alt: 'Original low-resolution hover unit cinematic frame from Sid Meier’s Alpha Centauri, 1999',
-            },
-            after: {
-              src: '/images/smac/unit-hover-enhanced.jpg',
-              srcWebp: '/images/smac/unit-hover-enhanced.webp',
-              width: 1024,
-              height: 576,
-              alt: 'Visually restored hover unit cinematic frame preserving original art direction at modern resolution',
-            },
-            aspectRatio: '16 / 9',
-            objectPosition: 'center center',
-          },
-          {
-            id: 'ship-orbit',
-            number: '03',
-            lines: ['The pixels were temporary.', 'The art direction wasn’t.'],
-            before: {
-              src: '/images/smac/ship-orbit-original.png',
-              srcWebp: '/images/smac/ship-orbit-original.webp',
-              width: 1000,
-              height: 494,
-              alt: 'Original low-resolution orbital spacecraft cinematic frame from Sid Meier’s Alpha Centauri, 1999',
-            },
-            after: {
-              src: '/images/smac/ship-orbit-enhanced.jpg',
-              srcWebp: '/images/smac/ship-orbit-enhanced.webp',
-              width: 1024,
-              height: 507,
-              alt: 'Visually restored orbital spacecraft cinematic frame preserving original art direction at modern resolution',
-            },
-            aspectRatio: '1024 / 507',
-            objectPosition: 'center center',
-          },
-        ],
+        label: 'Character Restoration',
+        description:
+          'Reconstructed from low-resolution source material while preserving identity, expression and original art direction.',
+        afterPercent: 55,
+        before: {
+          src: '/images/smac/leader-old-original.png',
+          srcWebp: '/images/smac/leader-old-original.webp',
+          width: 291,
+          height: 350,
+          alt: 'Original low-resolution older faction leader portrait from Sid Meier’s Alpha Centauri, 1999',
+        },
+        after: {
+          src: '/images/smac/leader-old-enhanced.png',
+          srcWebp: '/images/smac/leader-old-enhanced.webp',
+          width: 1144,
+          height: 1375,
+          alt: 'Visually restored older faction leader portrait, preserving original character at modern resolution',
+        },
+        aspectRatio: '291 / 350',
+        objectPosition: 'center top',
       },
       {
-        id: 'key-art',
+        id: 'cinematic',
         number: '04',
-        title: 'Key Art',
-        items: [
-          {
-            id: 'cover',
-            number: '01',
-            lines: ['Box art,', 'brought forward.'],
-            before: {
-              src: '/images/smac/cover-original.png',
-              srcWebp: '/images/smac/cover-original.webp',
-              width: 568,
-              height: 800,
-              alt: 'Original Sid Meier’s Alpha Centauri key art with faction leader collage, 1999',
-            },
-            after: {
-              src: '/images/smac/cover-enhanced.jpg',
-              srcWebp: '/images/smac/cover-enhanced.webp',
-              width: 727,
-              height: 1024,
-              alt: 'Visually restored Alpha Centauri key art preserving original composition at modern resolution',
-            },
-            aspectRatio: '727 / 1024',
-            objectPosition: 'center top',
-          },
-        ],
+        label: 'Pre-Rendered Cinematics',
+        description:
+          'Low-resolution cinematic material reconstructed with improved detail, materials and spatial depth.',
+        afterPercent: 55,
+        before: {
+          src: '/images/smac/cinematic-original.png',
+          srcWebp: '/images/smac/cinematic-original.webp',
+          width: 867,
+          height: 488,
+          alt: 'Original low-resolution pre-rendered cinematic frame with cybernetic figure, 1999',
+        },
+        after: {
+          src: '/images/smac/cinematic-enhanced.png',
+          srcWebp: '/images/smac/cinematic-enhanced.webp',
+          width: 1672,
+          height: 941,
+          alt: 'Visually restored cinematic frame preserving original art direction at modern resolution',
+        },
+        aspectRatio: '16 / 9',
+        objectPosition: 'center center',
       },
       {
-        id: 'interface',
+        id: 'environment',
         number: '05',
-        title: 'Interface',
-        items: [
-          {
-            id: 'ui-proposal',
-            number: '01',
-            lines: ['Same council.', 'Clearer canvas.'],
-            before: {
-              src: '/images/smac/ui-proposal-original.png',
-              srcWebp: '/images/smac/ui-proposal-original.webp',
-              width: 960,
-              height: 664,
-              alt: 'Original Planetary Council proposal interface from Sid Meier’s Alpha Centauri, 1999',
-            },
-            after: {
-              src: '/images/smac/ui-proposal-enhanced.jpg',
-              srcWebp: '/images/smac/ui-proposal-enhanced.webp',
-              width: 1024,
-              height: 708,
-              alt: 'Visually restored Planetary Council interface preserving original layout at modern resolution',
-            },
-            aspectRatio: '1024 / 708',
-            objectPosition: 'center top',
-          },
-        ],
+        label: 'Environments',
+        description:
+          'World artwork restored without replacing the original visual language with contemporary concept-art aesthetics.',
+        afterPercent: 55,
+        before: {
+          src: '/images/smac/environment-original.png',
+          srcWebp: '/images/smac/environment-original.webp',
+          width: 1024,
+          height: 546,
+          alt: 'Original low-resolution environment artwork from Sid Meier’s Alpha Centauri, 1999',
+        },
+        after: {
+          src: '/images/smac/environment-enhanced.jpg',
+          srcWebp: '/images/smac/environment-enhanced.webp',
+          width: 1024,
+          height: 546,
+          alt: 'Visually restored environment artwork preserving original art direction at modern resolution',
+        },
+        aspectRatio: '1024 / 546',
+        objectPosition: 'center center',
       },
     ],
   },
