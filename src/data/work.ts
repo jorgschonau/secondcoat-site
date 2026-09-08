@@ -211,6 +211,28 @@ export const workProjects: WorkProject[] = [
         aspectRatio: '16 / 9',
         objectPosition: 'center center',
       },
+      {
+        id: 'ship-orbit',
+        number: '08',
+        label: 'Pre-Rendered Cinematic',
+        lines: ['The pixels were temporary.', 'The art direction wasn’t.'],
+        before: {
+          src: '/images/smac/ship-orbit-original.png',
+          srcWebp: '/images/smac/ship-orbit-original.webp',
+          width: 1000,
+          height: 494,
+          alt: 'Original low-resolution orbital spacecraft cinematic frame from Sid Meier’s Alpha Centauri, 1999',
+        },
+        after: {
+          src: '/images/smac/ship-orbit-enhanced.jpg',
+          srcWebp: '/images/smac/ship-orbit-enhanced.webp',
+          width: 1024,
+          height: 507,
+          alt: 'Visually restored orbital spacecraft cinematic frame preserving original art direction at modern resolution',
+        },
+        aspectRatio: '1024 / 507',
+        objectPosition: 'center center',
+      },
     ],
   },
 ];
