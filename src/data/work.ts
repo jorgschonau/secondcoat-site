@@ -167,6 +167,28 @@ export const workProjects: WorkProject[] = [
         aspectRatio: '1024 / 546',
         objectPosition: 'center center',
       },
+      {
+        id: 'leader-scan',
+        number: '06',
+        label: 'Faction Leader',
+        lines: ['Atmosphere intact.', 'Resolution recovered.'],
+        before: {
+          src: '/images/smac/leader-scan-original.png',
+          srcWebp: '/images/smac/leader-scan-original.webp',
+          width: 200,
+          height: 120,
+          alt: 'Original low-resolution faction leader portrait with scanline presentation, 1999',
+        },
+        after: {
+          src: '/images/smac/leader-scan-enhanced.jpg',
+          srcWebp: '/images/smac/leader-scan-enhanced.webp',
+          width: 1024,
+          height: 614,
+          alt: 'Visually restored faction leader portrait preserving original lighting and atmosphere at modern resolution',
+        },
+        aspectRatio: '1024 / 614',
+        objectPosition: 'center center',
+      },
     ],
   },
 ];
