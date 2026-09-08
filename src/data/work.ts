@@ -277,6 +277,28 @@ export const workProjects: WorkProject[] = [
         aspectRatio: '857 / 1024',
         objectPosition: 'center top',
       },
+      {
+        id: 'ui-proposal',
+        number: '11',
+        label: 'Interface',
+        lines: ['Same council.', 'Clearer canvas.'],
+        before: {
+          src: '/images/smac/ui-proposal-original.png',
+          srcWebp: '/images/smac/ui-proposal-original.webp',
+          width: 960,
+          height: 664,
+          alt: 'Original Planetary Council proposal interface from Sid Meier’s Alpha Centauri, 1999',
+        },
+        after: {
+          src: '/images/smac/ui-proposal-enhanced.jpg',
+          srcWebp: '/images/smac/ui-proposal-enhanced.webp',
+          width: 1024,
+          height: 708,
+          alt: 'Visually restored Planetary Council interface preserving original layout at modern resolution',
+        },
+        aspectRatio: '1024 / 708',
+        objectPosition: 'center top',
+      },
     ],
   },
 ];
