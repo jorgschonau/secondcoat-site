@@ -37,12 +37,13 @@ const {
 const dividerPercent = 100 - afterPercent;
 const loading = priority ? 'eager' : 'lazy';
 const fetchpriority = priority ? 'high' : 'auto';
+const aspectNumeric = after.width / after.height;
 ---
 
 <figure
   class="comparison"
   data-comparison
-  style={`--aspect:${aspectRatio}; --object-pos:${objectPosition}; --pos:${dividerPercent}%;`}
+  style={`--aspect:${aspectRatio}; --ar:${aspectNumeric}; --object-pos:${objectPosition}; --pos:${dividerPercent}%;`}
 >
   <figcaption class="comparison__caption">
     <div class="comparison__meta">
@@ -260,10 +261,13 @@ const fetchpriority = priority ? 'high' : 'auto';
   }
 
   .comparison__stage {
+    --stage-max-h: min(82vh, 52rem);
     position: relative;
     aspect-ratio: var(--aspect);
-    width: 100%;
-    max-height: min(78vh, 52rem);
+    /* Keep true image proportions when max-height binds (critical on mobile) */
+    width: min(100%, calc(var(--stage-max-h) * var(--ar)));
+    max-height: var(--stage-max-h);
+    height: auto;
     margin-inline: auto;
     overflow: hidden;
     background: #0c0c0a;
@@ -285,9 +289,18 @@ const fetchpriority = priority ? 'high' : 'auto';
   }
 
   .comparison__media img {
-    object-fit: cover;
+    object-fit: contain;
     object-position: var(--object-pos);
     pointer-events: none;
+  }
+
+  /* Keep low-res originals crisp when scaled up */
+  .comparison__media--before img {
+    image-rendering: pixelated;
+  }
+
+  .comparison__media--after img {
+    image-rendering: auto;
   }
 
   .comparison__media--before {
@@ -423,7 +436,16 @@ const fetchpriority = priority ? 'high' : 'auto';
     }
 
     .comparison__stage {
-      max-height: 70vh;
+      --stage-max-h: min(88vh, 42rem);
+    }
+
+    .comparison__handle {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+
+    .comparison__labels {
+      inset: 0.65rem;
     }
   }
 </style>
