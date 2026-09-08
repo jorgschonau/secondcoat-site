@@ -189,6 +189,28 @@ export const workProjects: WorkProject[] = [
         aspectRatio: '1024 / 614',
         objectPosition: 'center center',
       },
+      {
+        id: 'unit-hover',
+        number: '07',
+        label: 'Unit / Cinematic',
+        lines: ['Same silhouette.', 'Better canvas.'],
+        before: {
+          src: '/images/smac/unit-hover-original.jpg',
+          srcWebp: '/images/smac/unit-hover-original.webp',
+          width: 1024,
+          height: 576,
+          alt: 'Original low-resolution hover unit cinematic frame from Sid Meier’s Alpha Centauri, 1999',
+        },
+        after: {
+          src: '/images/smac/unit-hover-enhanced.jpg',
+          srcWebp: '/images/smac/unit-hover-enhanced.webp',
+          width: 1024,
+          height: 576,
+          alt: 'Visually restored hover unit cinematic frame preserving original art direction at modern resolution',
+        },
+        aspectRatio: '16 / 9',
+        objectPosition: 'center center',
+      },
     ],
   },
 ];
