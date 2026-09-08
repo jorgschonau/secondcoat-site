@@ -233,6 +233,28 @@ export const workProjects: WorkProject[] = [
         aspectRatio: '1024 / 507',
         objectPosition: 'center center',
       },
+      {
+        id: 'cover',
+        number: '09',
+        label: 'Key Art',
+        lines: ['Box art,', 'brought forward.'],
+        before: {
+          src: '/images/smac/cover-original.png',
+          srcWebp: '/images/smac/cover-original.webp',
+          width: 568,
+          height: 800,
+          alt: 'Original Sid Meier’s Alpha Centauri key art with faction leader collage, 1999',
+        },
+        after: {
+          src: '/images/smac/cover-enhanced.jpg',
+          srcWebp: '/images/smac/cover-enhanced.webp',
+          width: 727,
+          height: 1024,
+          alt: 'Visually restored Alpha Centauri key art preserving original composition at modern resolution',
+        },
+        aspectRatio: '727 / 1024',
+        objectPosition: 'center top',
+      },
     ],
   },
 ];
