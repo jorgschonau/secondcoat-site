@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ComparisonSlider from '../../components/ComparisonSlider.astro';
+import { SITE } from '../../data/site';
+import { getWorkBySlug } from '../../data/work';
+
+const project = getWorkBySlug('alpha-centauri');
+if (!project) {
+  throw new Error('Missing alpha-centauri project data');
+}
+---
+
+<BaseLayout
+  title={`${project.title.replace('\n', ' ')} — ${SITE.name}`}
+  description="Unofficial visual restoration study of Sid Meier’s Alpha Centauri, demonstrating the Second Coat process."
+  canonicalPath="/work/alpha-centauri"
+>
+  <Header />
+  <main id="main" class="section section--loose">
+    <div class="page-shell--wide stack-xl">
+      <header class="stack-lg">
+        <p class="label">
+          <a href="/#work">← Selected Work</a>
+          &nbsp;/&nbsp;
+          {project.number}
+        </p>
+        <h1 class="display-lg">
+          {project.title.split('\n').map((line, i, arr) => (
+            <>
+              {line}
+              {i < arr.length - 1 && <br />}
+            </>
+          ))}
+        </h1>
+        <div class="meta">
+          <span class="label label--ink">{project.years}</span>
+          <span class="label">{project.statusLabel}</span>
+        </div>
+        <div class="prose prose--tight">
+          {project.summary.map((para) => <p>{para}</p>)}
+        </div>
+        <p class="display-md question">
+          {project.question.map((line, i, arr) => (
+            <>
+              {line}
+              {i < arr.length - 1 && <br />}
+            </>
+          ))}
+        </p>
+        <p class="disclaimer">{project.disclaimer}</p>
+      </header>
+
+      <div class="stack-comparisons">
+        {
+          project.comparisons.map((pair, index) => (
+            <ComparisonSlider
+              id={`page-${pair.id}`}
+              number={pair.number}
+              label={pair.label}
+              lines={pair.lines}
+              before={pair.before}
+              after={pair.after}
+              aspectRatio={pair.aspectRatio}
+              objectPosition={pair.objectPosition}
+              priority={index === 0}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </main>
+  <Footer disclaimer={project.disclaimer} />
+</BaseLayout>
+
+<style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+  }
+
+  .question {
+    max-width: 18ch;
+  }
+
+  .disclaimer {
+    max-width: 44rem;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--color-ink-faint);
+  }
+
+  .stack-comparisons > * + * {
+    margin-top: var(--space-2xl);
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+</style>

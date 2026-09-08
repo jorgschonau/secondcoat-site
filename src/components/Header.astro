@@ -1,0 +1,80 @@
+---
+import { SITE } from '../data/site';
+---
+
+<header class="masthead">
+  <div class="masthead__inner page-shell--wide">
+    <a class="masthead__brand" href="/">
+      <span class="masthead__name">{SITE.name}</span>
+      <span class="masthead__tag">{SITE.tagline}</span>
+    </a>
+    <nav class="masthead__nav" aria-label="Primary">
+      <a href="/#work">Work</a>
+      <a href="/#approach">Approach</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+    border-bottom: 1px solid var(--color-rule);
+    background: var(--color-bg);
+  }
+
+  .masthead__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .masthead__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .masthead__name {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .masthead__tag {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+  }
+
+  .masthead__nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2rem);
+  }
+
+  .masthead__nav a {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-ink-muted);
+    transition: color var(--duration) var(--ease);
+  }
+
+  .masthead__nav a:hover {
+    color: var(--color-ink);
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+import { SITE } from '../data/site';
+
+interface Props {
+  disclaimer?: string;
+}
+
+const { disclaimer } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="page-shell--wide site-footer__inner">
+    <div class="site-footer__brand stack-sm">
+      <p class="site-footer__name">{SITE.name}</p>
+      <p class="site-footer__domain">{SITE.domain}</p>
+      <p class="site-footer__line">Classic games.<br />Carefully brought forward.</p>
+    </div>
+
+    <div class="site-footer__meta stack-md">
+      {
+        disclaimer && (
+          <p class="site-footer__legal">{disclaimer}</p>
+        )
+      }
+      <p class="site-footer__copy">
+        © {year} {SITE.name}. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-rule);
+    padding-block: var(--space-xl) var(--space-2xl);
+  }
+
+  .site-footer__inner {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 800px) {
+    .site-footer__inner {
+      grid-template-columns: 1fr 1.4fr;
+      align-items: end;
+    }
+  }
+
+  .site-footer__name {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .site-footer__domain,
+  .site-footer__copy {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+  }
+
+  .site-footer__line {
+    color: var(--color-ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    max-width: 16rem;
+  }
+
+  .site-footer__legal {
+    font-size: 0.75rem;
+    line-height: 1.55;
+    color: var(--color-ink-faint);
+    max-width: 42rem;
+  }
+</style>

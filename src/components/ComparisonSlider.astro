@@ -1,0 +1,429 @@
+---
+interface ImageAsset {
+  src: string;
+  srcWebp: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+interface Props {
+  id: string;
+  number: string;
+  label: string;
+  lines: string[];
+  before: ImageAsset;
+  after: ImageAsset;
+  aspectRatio: string;
+  objectPosition?: string;
+  priority?: boolean;
+  /** Percent of stage showing the enhanced (after) image. Default 65. */
+  afterPercent?: number;
+}
+
+const {
+  id,
+  number,
+  label,
+  lines,
+  before,
+  after,
+  aspectRatio,
+  objectPosition = 'center center',
+  priority = false,
+  afterPercent = 65,
+} = Astro.props;
+
+const dividerPercent = 100 - afterPercent;
+const loading = priority ? 'eager' : 'lazy';
+const fetchpriority = priority ? 'high' : 'auto';
+---
+
+<figure
+  class="comparison"
+  data-comparison
+  style={`--aspect:${aspectRatio}; --object-pos:${objectPosition}; --pos:${dividerPercent}%;`}
+>
+  <figcaption class="comparison__caption">
+    <div class="comparison__meta">
+      <span class="label">{number}</span>
+      <h3 class="comparison__title">{label}</h3>
+    </div>
+    <p class="comparison__lines">
+      {lines.map((line, i) => (
+        <>
+          {line}{i < lines.length - 1 && <br />}
+        </>
+      ))}
+    </p>
+  </figcaption>
+
+  <div
+    class="comparison__stage"
+    data-stage
+    role="group"
+    aria-roledescription="before and after image comparison"
+    aria-label={`${label}: drag or use arrow keys to compare original and restored`}
+  >
+    <div class="comparison__media comparison__media--after" aria-hidden="true">
+      <picture>
+        <source srcset={after.srcWebp} type="image/webp" />
+        <img
+          src={after.src}
+          width={after.width}
+          height={after.height}
+          alt=""
+          loading={loading}
+          decoding="async"
+          fetchpriority={fetchpriority}
+          sizes="(max-width: 900px) 94vw, min(88rem, 90vw)"
+        />
+      </picture>
+    </div>
+
+    <div class="comparison__media comparison__media--before" data-before aria-hidden="true">
+      <picture>
+        <source srcset={before.srcWebp} type="image/webp" />
+        <img
+          src={before.src}
+          width={before.width}
+          height={before.height}
+          alt=""
+          loading={loading}
+          decoding="async"
+          fetchpriority={fetchpriority}
+          sizes="(max-width: 900px) 94vw, min(88rem, 90vw)"
+        />
+      </picture>
+    </div>
+
+    <div class="comparison__labels" aria-hidden="true">
+      <span class="comparison__badge">Before</span>
+      <span class="comparison__badge">After</span>
+    </div>
+
+    <div class="comparison__divider" data-divider aria-hidden="true">
+      <span class="comparison__handle"></span>
+    </div>
+
+    <label class="sr-only" for={`compare-${id}`}>Comparison position between original and restored</label>
+    <input
+      class="comparison__range"
+      id={`compare-${id}`}
+      data-range
+      type="range"
+      min="0"
+      max="100"
+      value={String(dividerPercent)}
+      step="1"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={dividerPercent}
+      aria-valuetext={`${afterPercent}% restored, ${dividerPercent}% original`}
+      aria-label="Reveal original versus restored image"
+    />
+  </div>
+
+  <details class="comparison__alt">
+    <summary>View images separately</summary>
+    <div class="comparison__alt-grid">
+      <figure>
+        <picture>
+          <source srcset={before.srcWebp} type="image/webp" />
+          <img
+            src={before.src}
+            width={before.width}
+            height={before.height}
+            alt={before.alt}
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+        <figcaption class="label">Before</figcaption>
+      </figure>
+      <figure>
+        <picture>
+          <source srcset={after.srcWebp} type="image/webp" />
+          <img
+            src={after.src}
+            width={after.width}
+            height={after.height}
+            alt={after.alt}
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+        <figcaption class="label">After</figcaption>
+      </figure>
+    </div>
+  </details>
+</figure>
+
+<script>
+  function initComparison(root: HTMLElement) {
+    const stage = root.querySelector<HTMLElement>('[data-stage]');
+    const before = root.querySelector<HTMLElement>('[data-before]');
+    const divider = root.querySelector<HTMLElement>('[data-divider]');
+    const range = root.querySelector<HTMLInputElement>('[data-range]');
+    if (!stage || !before || !divider || !range) return;
+
+    let dragging = false;
+
+    const setDivider = (percentFromLeft: number) => {
+      const clamped = Math.min(100, Math.max(0, percentFromLeft));
+      const rounded = Math.round(clamped);
+      root.style.setProperty('--pos', `${clamped}%`);
+      range.value = String(rounded);
+      range.setAttribute('aria-valuenow', String(rounded));
+      const afterPct = 100 - rounded;
+      range.setAttribute(
+        'aria-valuetext',
+        `${afterPct}% restored, ${rounded}% original`,
+      );
+    };
+
+    const fromClientX = (clientX: number) => {
+      const rect = stage.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      setDivider(((clientX - rect.left) / rect.width) * 100);
+    };
+
+    range.addEventListener('input', () => setDivider(Number(range.value)));
+
+    stage.addEventListener('pointerdown', (event: PointerEvent) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      if ((event.target as HTMLElement).closest('input')) return;
+      dragging = true;
+      stage.setPointerCapture(event.pointerId);
+      fromClientX(event.clientX);
+    });
+
+    stage.addEventListener('pointermove', (event: PointerEvent) => {
+      if (!dragging) return;
+      fromClientX(event.clientX);
+    });
+
+    const endDrag = (event: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      if (stage.hasPointerCapture(event.pointerId)) {
+        stage.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    stage.addEventListener('pointerup', endDrag);
+    stage.addEventListener('pointercancel', endDrag);
+  }
+
+  const boot = () => {
+    document.querySelectorAll<HTMLElement>('[data-comparison]').forEach(initComparison);
+  };
+
+  boot();
+  document.addEventListener('astro:page-load', boot);
+</script>
+
+<style>
+  .comparison {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .comparison__caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    align-items: end;
+  }
+
+  .comparison__meta {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .comparison__title {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .comparison__lines {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    color: var(--color-ink-muted);
+    text-align: right;
+  }
+
+  .comparison__stage {
+    position: relative;
+    aspect-ratio: var(--aspect);
+    width: 100%;
+    max-height: min(78vh, 52rem);
+    margin-inline: auto;
+    overflow: hidden;
+    background: #080807;
+    border: 1px solid var(--color-rule);
+    touch-action: none;
+    user-select: none;
+    cursor: col-resize;
+  }
+
+  .comparison__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .comparison__media picture,
+  .comparison__media img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .comparison__media img {
+    object-fit: cover;
+    object-position: var(--object-pos);
+    pointer-events: none;
+  }
+
+  .comparison__media--before {
+    z-index: 2;
+    clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+  }
+
+  .comparison__labels {
+    position: absolute;
+    inset: 0.85rem;
+    z-index: 4;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  .comparison__badge {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    background: rgba(14, 14, 12, 0.72);
+    border: 1px solid var(--color-rule-strong);
+    padding: 0.35rem 0.5rem;
+  }
+
+  .comparison__divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    z-index: 5;
+    width: 1px;
+    background: var(--color-ink);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .comparison__handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2.35rem;
+    height: 2.35rem;
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--color-ink);
+    border-radius: 999px;
+    background: rgba(14, 14, 12, 0.85);
+  }
+
+  .comparison__handle::before,
+  .comparison__handle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-top: 1px solid var(--color-ink);
+    border-right: 1px solid var(--color-ink);
+  }
+
+  .comparison__handle::before {
+    left: 0.55rem;
+    transform: translateY(-50%) rotate(-135deg);
+  }
+
+  .comparison__handle::after {
+    right: 0.55rem;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  .comparison__range {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: col-resize;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .comparison__alt {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.75rem;
+  }
+
+  .comparison__alt summary {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+    cursor: pointer;
+    width: fit-content;
+  }
+
+  .comparison__alt summary:hover {
+    color: var(--color-ink-muted);
+  }
+
+  .comparison__alt-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 700px) {
+    .comparison__alt-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .comparison__alt-grid figure {
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .comparison__alt-grid img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-rule);
+  }
+
+  @media (max-width: 700px) {
+    .comparison__lines {
+      text-align: left;
+      width: 100%;
+    }
+
+    .comparison__stage {
+      max-height: 70vh;
+    }
+  }
+</style>
