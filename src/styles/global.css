@@ -23,7 +23,7 @@
   --space-3xl: 8rem;
 
   --header-h: 4.25rem;
-  --page-pad: clamp(1.25rem, 4vw, 3.5rem);
+  --page-pad: clamp(1.75rem, 5.5vw, 5rem);
   --content-max: 72rem;
   --measure: 38rem;
 
