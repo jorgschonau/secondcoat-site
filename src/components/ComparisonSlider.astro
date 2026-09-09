@@ -442,17 +442,36 @@ const accessibleName = ariaName || label || 'Comparison';
   }
 
   @media (max-width: 700px) {
+    .comparison {
+      /* Use full viewport width so landscape stages aren’t tiny inside page pad */
+      width: 100vw;
+      max-width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+    }
+
+    .comparison__caption {
+      padding-inline: var(--page-pad);
+    }
+
     .comparison__lines {
       text-align: left;
       width: 100%;
     }
 
     .comparison__stage {
-      --stage-max-h: min(78vh, 38rem);
+      --stage-max-h: min(92vh, 52rem);
+      width: min(100%, calc(var(--stage-max-h) * var(--ar)));
+      border-left: 0;
+      border-right: 0;
     }
 
     .comparison--featured .comparison__stage {
-      --stage-max-h: min(84vh, 44rem);
+      --stage-max-h: min(94vh, 56rem);
+    }
+
+    .comparison__alt {
+      padding-inline: var(--page-pad);
     }
 
     .comparison__handle {
