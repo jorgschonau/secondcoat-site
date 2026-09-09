@@ -3,7 +3,7 @@ import { SITE } from '../data/site';
 ---
 
 <header class="masthead">
-  <div class="masthead__inner page-shell--wide">
+  <div class="masthead__inner">
     <a class="masthead__brand" href="/">
       <span class="masthead__name">{SITE.name}</span>
       <span class="masthead__tag">{SITE.tagline}</span>
@@ -32,6 +32,10 @@ import { SITE } from '../data/site';
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: var(--page-pad);
   }
 
   .masthead__brand {

@@ -23,7 +23,7 @@
   --space-3xl: 8rem;
 
   --header-h: 4.25rem;
-  --page-pad: clamp(1.75rem, 5.5vw, 5rem);
+  --page-pad: clamp(2.25rem, 8vw, 7rem);
   --content-max: 72rem;
   --measure: 38rem;
 
@@ -159,12 +159,17 @@ button {
 }
 
 .page-shell {
-  width: min(100% - (var(--page-pad) * 2), var(--content-max));
+  width: 100%;
+  max-width: var(--content-max);
   margin-inline: auto;
+  padding-inline: var(--page-pad);
 }
 
 .page-shell--wide {
-  width: min(100% - (var(--page-pad) * 2), 88rem);
+  width: 100%;
+  max-width: 88rem;
+  margin-inline: auto;
+  padding-inline: var(--page-pad);
 }
 
 .section {
